@@ -23,5 +23,5 @@ public:
 
 	virtual void unregisterReadEvent(int fd, IEventDispatcher* eventDispatcher, bool readEvent) = 0;
 	virtual void unregisterWriteEvent(int fd, IEventDispatcher* eventDispatcher, bool writeEvent) = 0;
-	virtual void unregisterAllEvent(int fd, IEventDispatcher* eventDispatcher) = 0;
+	virtual void unregisterAllEvents(int fd, IEventDispatcher* eventDispatcher) = 0;
 };

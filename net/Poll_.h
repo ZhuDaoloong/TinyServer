@@ -1,18 +1,21 @@
 /**
-*	zhudaoloong 2024.11.13
-*	Epoll wrapper class
+* zhudaoloong 2024.11.13
+* Wrapper poll class
+* NOTE: IN WINDOWS => '#include' isn't case-sensitive, but linux is
 */
 #pragma once
-
 #include "IIOMultiplex.h"
 
-#include <sys/epoll.h>
+#include <poll.h>
+#include <memory>
+
+#include <vector>
 #include <map>
 
-class Epoll : public IIOMultiplex{
+class Poll : public IIOMultiplex {
 public:
-	Epoll();
-	~Epoll();
+	Poll();
+	~Poll();
 
 	virtual void poll(int timeoutUs, std::vector<IEventDispatcher*>& triggerEventDispatchers) override;
 
@@ -24,13 +27,15 @@ public:
 	virtual void unregisterAllEvents(int fd, IEventDispatcher* eventDispatcher) override;
 
 private:
-	Epoll(const Epoll& rhs) = delete;
-	Epoll& operator=(const Epoll&) = delete;
+	Poll(const Poll& rhs) = delete;
+	Poll& operator=(const Poll& rhs) = delete;
 
-	Epoll(Epoll&& rhs) = delete;
-	Epoll& operator=(Epoll&& rhs) = delete;
+	Poll(const Poll&& rhs) = delete;
+	Poll& operator=(const Poll&& rhs) = delete;
 
 private:
-	int							m_epollfd{-1};
-	std::map<int, int32_t>		m_fdEventFlags;
+	pollfd								m_pollfd;
+	std::vector<pollfd>					m_pollfds;
+	std::map<int, IEventDispatcher*>	m_eventDispatchers;
+
 };

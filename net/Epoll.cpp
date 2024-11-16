@@ -2,6 +2,9 @@
 
 #include <sys/epoll.h>
 #include <unistd.h>
+#include <string.h>
+
+#include <iostream>
 
 #include "utils.h"
 
@@ -26,6 +29,7 @@ Epoll::~Epoll() {
 void Epoll::poll(int timeoutUs, std::vector<IEventDispatcher*>& triggerEventDispatchers) {
 	struct epoll_event events[1024];
 	int timeoutMs = timeoutUs / 1000;
+
 	bool enableRead = false;
 	bool enableWrite = false;
 
